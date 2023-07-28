@@ -8,6 +8,7 @@ public class Percolation {
     private int bottomNode;
     private int numOpenSites;
     private boolean[][] grid;
+    private boolean percolationIsThere;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -21,6 +22,7 @@ public class Percolation {
 
         grid = new boolean[n][n];
         numOpenSites = 0;
+        percolationIsThere = false;
     }
 
     // opens the site (row, col) if it is not open already
@@ -35,7 +37,7 @@ public class Percolation {
 
         if (row == 1) // top row
             uf.union(topNode, currNum);
-        if (row == n) // bottom row
+        if (!percolationIsThere && row == n) // bottom row
             uf.union(bottomNode, currNum);
 
         if (row > 1 && isOpen(row - 1, col)) // left
@@ -58,7 +60,7 @@ public class Percolation {
     // is the site (row, col) open?
     public boolean isOpen(int row, int col) {
         if (row < 1 || row > n || col < 1 || col > n)
-            throw new IllegalArgumentException("Required: 1 <= row <= n && 1 <= col <= n. Here row=" + row + " col=" + col);
+            throw new IllegalArgumentException("Required: 1 <= row <= n && 1 <= col <= n. Here row=" + row + " col=" + col);        
 
         return grid[row - 1][col - 1];
     }
@@ -78,7 +80,12 @@ public class Percolation {
 
     // does the system percolate?
     public boolean percolates() {
-        return uf.find(topNode) == uf.find(bottomNode);
+        var percolates = uf.find(topNode) == uf.find(bottomNode);
+
+        if (percolates)
+            percolationIsThere = true;
+
+        return percolates;
     }
 
     // test client (optional)

@@ -3,13 +3,17 @@ import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
 
-    private double[] results;
-    private int trials;
     private static final double CONFIDENCE_95 = 1.96;
 
+    private double[] results;
+    private int trials;
+    
     // perform independent trials on an n-by-n grid
     public PercolationStats(int n, int trials) {
         this.trials = trials;
+
+        if (n < 1 || trials < 1)
+            throw new IllegalArgumentException();
         
         var randomMax = n + 1;
 
@@ -61,11 +65,14 @@ public class PercolationStats {
         if (args.length == 2) {
             var n = Integer.parseInt(args[0]);
             var t = Integer.parseInt(args[1]);
+
+            if (n < 1 || t < 1)
+                throw new IllegalArgumentException("n and t need to be 1 or higher");
             
             var stats = new PercolationStats(n, t);
             System.out.println("mean = " + stats.mean());
             System.out.println("stddev = " + stats.stddev());
-            System.out.println("95% conf. inter = [" + stats.confidenceLo() + ", " + stats.confidenceHi() + "]");
+            System.out.println("95% confidence interval = [" + stats.confidenceLo() + ", " + stats.confidenceHi() + "]");
         }
         else {
             System.out.println("Please give n and T integers as arguments.");
