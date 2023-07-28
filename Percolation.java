@@ -1,16 +1,13 @@
-import javax.management.RuntimeErrorException;
-import edu.princeton.cs.algs4.StdRandom;
-import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    WeightedQuickUnionUF uf;
-    int n;
-    int topNode;
-    int bottomNode;
-    int numOpenSites;
-    boolean grid[][];
+    private WeightedQuickUnionUF uf;
+    private int n;
+    private int topNode;
+    private int bottomNode;
+    private int numOpenSites;
+    private boolean[][] grid;
 
     // creates n-by-n grid, with all sites initially blocked
     public Percolation(int n) {
@@ -38,7 +35,7 @@ public class Percolation {
 
         if (row == 1) // top row
             uf.union(topNode, currNum);
-        else if (row == n) // bottom row
+        if (row == n) // bottom row
             uf.union(bottomNode, currNum);
 
         if (row > 1 && isOpen(row - 1, col)) // left
@@ -54,7 +51,7 @@ public class Percolation {
         grid[row - 1][col - 1] = true;
     }
 
-    int getNum(int row, int col) {
+    private int getNum(int row, int col) {
         return (row - 1) * n + (col - 1);
     }
 
@@ -68,7 +65,6 @@ public class Percolation {
 
     // is the site (row, col) full?
     public boolean isFull(int row, int col) {
-        var n = grid.length;
         if (row < 1 || row > n || col < 1 || col > n)
             throw new IllegalArgumentException("Required: 1 <= row <= n && 1 <= col <= n. Here row=" + row + " col=" + col);
 
